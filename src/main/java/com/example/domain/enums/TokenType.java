@@ -1,4 +1,4 @@
-ggipackage com.example.domain.enums;
+package com.example.domain.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
