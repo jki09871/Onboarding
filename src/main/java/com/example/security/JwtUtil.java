@@ -65,7 +65,7 @@ public class JwtUtil {
         return Jwts.parserBuilder().setSigningKey(key).build();
     }
 
-    private SecretKey getSecretKeyFromBase64(String base64) {
+    public SecretKey getSecretKeyFromBase64(String base64) {
         try {
             return Keys.hmacShaKeyFor(Decoders.BASE64.decode(base64));
         } catch (Exception e) {
