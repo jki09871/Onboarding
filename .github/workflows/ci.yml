@@ -87,3 +87,4 @@ jobs:
 
             # Ensure Redis container is running
             docker ps | grep redis || docker run -d --name redis -p 6379:6379 redis:6.2
+          debug: true
