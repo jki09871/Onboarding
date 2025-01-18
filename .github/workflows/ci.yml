@@ -90,8 +90,8 @@ jobs:
             echo "${{ secrets.APP_ENV }}" > .env
       
             # Run Docker container with .env file
-            docker run -d --name demo-app --link redis -p 8080:8080 --env-file .env ${{ secrets.ECR_URI }}/demo:latest
-      
+            docker run -d --name demo-app --link redis -p 8080:8080 --env-file /home/ec2-user/.env ${{ secrets.ECR_URI }}/demo:latest            
+            
             # Ensure Redis container is running
             docker ps | grep redis || docker run -d --name redis -p 6379:6379 redis:6.2
       
