@@ -122,23 +122,7 @@ public class JwtUtil {
             throw new IllegalArgumentException("Invalid token");
         }
     }
-
-    public boolean isNearExpiration(String token) {
-        try {
-            // 토큰의 Claims에서 만료 시간 추출
-            Claims claims = extractClaims(token);
-            Date expiration = claims.getExpiration();
-
-            // 현재 시간
-            Date now = new Date();
-
-            // 남은 시간이 지정된 임계값(예: 7일)보다 적은지 확인
-            long thresholdMillis = TimeUnit.DAYS.toMillis(1);
-            return expiration.getTime() - now.getTime() < thresholdMillis;
-        } catch (Exception e) {
-            throw new ApiException(ErrorStatus.INVALID_TOKEN_FORMAT);
-        }
-    }
+    
 
     public String getUserId(String token) {
         try {
