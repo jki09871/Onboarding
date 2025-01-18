@@ -19,6 +19,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: 17
+          distribution: temurin # 사용할 Java 분배판 지정
 
       # 3. Build with Gradle
       - name: Build JAR with Gradle
