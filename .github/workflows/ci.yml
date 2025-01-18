@@ -69,29 +69,34 @@ jobs:
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
-          key: "${{ secrets.EC2_KEY }}"
+          key: ${{ secrets.EC2_KEY }}
           port: 22
           debug: true # 디버그 활성화
           script: |
             echo "SSH connection established. Starting deployment."
-
+      
             # Stop and remove existing Spring Boot container
             docker stop demo-app || true
             docker rm demo-app || true
-
+      
             # Remove old image
             docker rmi ${{ secrets.ECR_URI }}/demo:latest || true
-
+      
             # Pull and run new image
             aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_URI }}
             docker pull ${{ secrets.ECR_URI }}/demo:latest
-            docker run -d --name demo-app --link redis -p 8080:8080 ${{ secrets.ECR_URI }}/demo:latest
-
+      
+            # Create .env file dynamically
+            echo "${{ secrets.APP_ENV }}" > .env
+      
+            # Run Docker container with .env file
+            docker run -d --name demo-app --link redis -p 8080:8080 --env-file .env ${{ secrets.ECR_URI }}/demo:latest
+      
             # Ensure Redis container is running
             docker ps | grep redis || docker run -d --name redis -p 6379:6379 redis:6.2
-
+      
             # Check application status
             echo "Checking application logs..."
             docker logs demo-app || echo "Application logs not found."
-
+      
             echo "Deployment finished successfully."
