@@ -22,7 +22,10 @@ jobs:
           distribution: temurin # 사용할 Java 분배판 지정
 
       # 3. Build with Gradle
-      - name: Build JAR with Gradle
+      - name: Grant execute permissions for Gradlew
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle
         run: ./gradlew build
 
       # 4. Log in to Amazon ECR
