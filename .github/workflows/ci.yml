@@ -27,7 +27,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      # 4. Configure AWS credentials (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION을 secrets에 저장해두어야 함)
+      # 4. Configure AWS credentials
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -38,8 +38,6 @@ jobs:
       # 5. Login to Amazon ECR
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
-        with:
-          region: ${{ secrets.AWS_REGION }}
 
       # 6. Delete existing image from ECR
       - name: Delete existing image from ECR
@@ -72,7 +70,11 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
+          port: 22
+          debug: true # 디버그 활성화
           script: |
+            echo "SSH connection established. Starting deployment."
+
             # Stop and remove existing Spring Boot container
             docker stop demo-app || true
             docker rm demo-app || true
@@ -87,4 +89,9 @@ jobs:
 
             # Ensure Redis container is running
             docker ps | grep redis || docker run -d --name redis -p 6379:6379 redis:6.2
-          debug: true
+
+            # Check application status
+            echo "Checking application logs..."
+            docker logs demo-app || echo "Application logs not found."
+
+            echo "Deployment finished successfully."
