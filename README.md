@@ -141,6 +141,14 @@ src/main/java
         - **비밀번호 규칙 위반**: 잘못된 비밀번호 규칙을 입력할 경우 INVALID_REQUEST 에러가 발생하는지 검증합니다.
         - **잘못된 관리자 토큰**: 유효하지 않은 관리자 토큰을 입력할 경우 FORBIDDEN_TOKEN 에러가 발생하는지 검증합니다.
         - **닉네임 중복**: 이미 존재하는 닉네임으로 회원가입 시도 시 DUPLICATE_NICKNAME 에러가 발생하는지 검증합니다.
+- **JwtUtilTest**:
+    - Access / Refresh Token 발행과 검증.
+    - 주요 테스트 시나리오:
+        - **Access Token 테스트**: Access Token이 정상적으로 생성되고, Claim 정보(userId, nickname, role)가 정확히 포함되는지 확인합니다.
+        - **Refresh Token 테스트**: Refresh Token이 생성되고, Claim 정보(userId, category)가 정확히 포함되는지 검증합니다.
+        - **토큰 만료 테스트**: 만료된 토큰에 대해 isExpired 메서드가 올바르게 만료 여부를 판단하고 예외를 발생시키는지 확인합니다.
+        - **유효하지 않은 토큰 테스트**: 잘못된 형식의 토큰에 대해 각 메서드가 올바른 예외(MalformedJwtException 등)를 반환하는지 확인합니다.
+        - **Claim 데이터 추출 테스트**: 토큰에서 userId와 category가 정확히 추출되는지 검증합니다.
 ---
 ### GitHub Actions를 통한 AWS 배포
 이 프로젝트에서는 GitHub Actions를 이용하여 AWS에 자동 배포하는 작업을 설정하였습니다. 아래는 해당 설정을 위한 CI/CD 파이프라인의 YAML 파일입니다:
