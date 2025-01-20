@@ -13,18 +13,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
       - SPRING_REDIS_HOST=redis
     depends_on:
-      - mysql
       - redis
-
-  mysql:
-    image: mysql:8.0
-    container_name: mysql
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: demo
-    ports:
-      - "3306:3306"
 
   redis:
     image: redis:6.2
